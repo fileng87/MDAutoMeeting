@@ -40,6 +40,7 @@ async function openCrawlerWeb() {
 		opts.addArguments("--disable-extensions");
 		opts.addArguments("-enable-webgl");
 		opts.addArguments("--disable-gpu")
+		opts.excludeSwitches("enable-logging")
 		opts.setUserPreferences({
 			"profile.default_content_setting_values.media_stream_mic": 1,
 			"profile.default_content_setting_values.media_stream_camera": 1,
