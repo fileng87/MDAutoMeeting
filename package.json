@@ -10,8 +10,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.27.2",
+    "cheerio": "^1.0.0-rc.11",
     "cron": "^2.0.0",
     "dotenv": "^16.0.1",
+    "iconv-lite": "^0.6.3",
     "selenium-webdriver": "^4.1.2"
   }
 }

@@ -1,14 +1,13 @@
 require("dotenv").config(); //載入.env環境檔
-const { Builder, By, Key, until } = require("selenium-webdriver"); // 加入虛擬網頁套件
+const { Capabilities, Builder, By, Key, until } = require("selenium-webdriver"); // 加入虛擬網頁套件
 const chrome = require("selenium-webdriver/chrome");
 const path = require("path"); //用於處理文件路徑的小工具
 const fs = require("fs"); //讀取檔案用
 const { CronJob } = require("cron");
-const { classes } = require("./classes");
+const { Table } = require("./table");
+const {delay, log} = require("./function")
 
-function delay(ms) {
-	return new Promise((r) => setTimeout(r, ms));
-}
+const table = new Table(process.env.STDID, process.env.STDPWD)
 
 function checkDriver() {
 	try {
@@ -36,7 +35,6 @@ function checkDriver() {
 }
 
 async function openCrawlerWeb() {
-	try {
 		if (!checkDriver()) {
 			// 檢查Driver是否是設定，如果無法設定就結束程式
 			return;
@@ -44,10 +42,10 @@ async function openCrawlerWeb() {
 
 		let opts = new chrome.Options();
 		opts.addArguments("start-maximized");
+		opts.addArguments("enable-logging")
 		opts.addArguments("--disable-extensions");
 		opts.addArguments("-enable-webgl");
-		opts.addArguments("--no-sandbox");
-		opts.addArguments("--disable-dev-shm-usage");
+		opts.addArguments("--disable-gpu")
 		opts.setUserPreferences({
 			"profile.default_content_setting_values.media_stream_mic": 1,
 			"profile.default_content_setting_values.media_stream_camera": 1,
@@ -55,8 +53,9 @@ async function openCrawlerWeb() {
 			"profile.default_content_setting_values.notifications": 1,
 		});
 
-		let driver = await new Builder().forBrowser("chrome").setChromeOptions(opts).build();
-
+		let driver = await new Builder().forBrowser("chrome")
+			.setChromeOptions(opts).build();
+		try {
 		driver.get(
 			"https://accounts.google.com/signin/v2/identifier?ltmpl=meet&continue=https%3A%2F%2Fmeet.google.com%3Fhs%3D193&&o_ref=https%3A%2F%2Fwww.google.com%2F&_ga=2.155881595.1533375318.1653442791-696588692.1653442791&flowName=GlifWebSignIn&flowEntry=ServiceLogin"
 		);
@@ -122,10 +121,13 @@ async function openCrawlerWeb() {
 		}
 
 		async function test() {
-			await log("加入課程: 早修");
-			await joinMeet("https://meet.google.com/pcj-cnyx-nkv");
+			const class_ = await table.getClass(2,3);
+			await log(`加入課程: ${class_.name}`);
+			await joinMeet(class_.online.url);
 			await log("加入完成");
 		}
+
+		test();
 
 		const morning = new CronJob("0 10 8 * * 1-5", async () => {
 			await log("加入課程: 早修");
@@ -135,13 +137,23 @@ async function openCrawlerWeb() {
 		morning.start();
 
 		let jobs = [];
-		for (let i = 8; i <= 16; i++) {
+		for (let i = 8; i <= 15; i++) {
 			if (i === 12) continue;
+			let job;
+			if(i > 12){
+				job = new CronJob(`0 20 ${i} * * 1-5`, async () => {
+					const clase = await table.getClass(new Date().getDay(),i - 8);
+					await log(`加入課程: ${clase.name}`);
+					await joinMeet(clase.online.url);
+					await log("加入完成");
+				});
+				continue;
+			}
 			//* 23 ${i} * * 1-5
-			const job = new CronJob(`0 20 ${i} * * 1-5`, async () => {
-				const clase = classes[new Date().getDay() - 1][i - 8];
+			job = new CronJob(`0 20 ${i} * * 1-5`, async () => {
+				const clase = await table.getClass(new Date().getDay(),i - 7);
 				await log(`加入課程: ${clase.name}`);
-				await joinMeet(clase.url[0]);
+				await joinMeet(clase.online.url);
 				await log("加入完成");
 			});
 			job.start();
@@ -151,18 +163,6 @@ async function openCrawlerWeb() {
 		driver.quit();
 		return log(err);
 	}
-}
-
-function log(str) {
-	const date = new Date();
-	const Y = date.getFullYear().toString().padStart(4, "0");
-	const M = date.getMonth().toString().padStart(2, "0");
-	const D = date.getDate().toString().padStart(2, "0");
-	const h = date.getHours().toString().padStart(2, "0");
-	const m = date.getMinutes().toString().padStart(2, "0");
-	const s = date.getSeconds().toString().padStart(2, "0");
-	const time = `${Y}-${M}-${D}T${h}:${m}:${s}`;
-	console.log(`%c${time} | ` + `${str}`, "color:#91ddff");
 }
 
 openCrawlerWeb(); //打開爬蟲網頁
