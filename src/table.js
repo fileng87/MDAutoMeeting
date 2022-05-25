@@ -93,7 +93,7 @@ class Table {
     async getOnline(day, period, f_sPeriodsem) {
         try {
             const $ = cheerio.load(`${this.html}`)
-            log(`開始抓取線上會議連結... (星期: ${day}), 節數: ${period})`);
+            log(`開始抓取線上會議連結... (星期: ${day}, 節數: ${period})`);
             const id = $(`#F_${day}_${period}_P div img`).attr("id").slice(6);
             const res = await axios({
                 method: "get",
