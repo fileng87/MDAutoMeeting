@@ -42,7 +42,6 @@ async function openCrawlerWeb() {
 
 		let opts = new chrome.Options();
 		opts.addArguments("start-maximized");
-		opts.addArguments("enable-logging")
 		opts.addArguments("--disable-extensions");
 		opts.addArguments("-enable-webgl");
 		opts.addArguments("--disable-gpu")
