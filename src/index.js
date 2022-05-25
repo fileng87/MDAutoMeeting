@@ -131,7 +131,7 @@ async function openCrawlerWeb() {
 
 		const morning = new CronJob("0 10 8 * * 1-5", async () => {
 			await log("加入課程: 早修");
-			await joinMeet("https://meet.google.com/pcj-cnyx-nkv");
+			await joinMeet(process.env.MORNING);
 			await log("課程:早修 加入完成");
 		});
 		morning.start();
