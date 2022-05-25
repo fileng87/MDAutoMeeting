@@ -55,12 +55,11 @@ async function openCrawlerWeb() {
 			"profile.default_content_setting_values.notifications": 1,
 		});
 
-		// 建立這個broswer的類型
 		let driver = await new Builder().forBrowser("chrome").setChromeOptions(opts).build();
 
 		driver.get(
 			"https://accounts.google.com/signin/v2/identifier?ltmpl=meet&continue=https%3A%2F%2Fmeet.google.com%3Fhs%3D193&&o_ref=https%3A%2F%2Fwww.google.com%2F&_ga=2.155881595.1533375318.1653442791-696588692.1653442791&flowName=GlifWebSignIn&flowEntry=ServiceLogin"
-		); //透國這個driver打開網頁
+		);
 
 		await driver
 			.wait(until.elementLocated(By.id("identifierId"), 5000))
@@ -83,7 +82,7 @@ async function openCrawlerWeb() {
 		async function joinMeet(url) {
 			try {
 				await driver.get(url);
-				await delay(10000);
+				await delay(7000);
 				await driver
 					.wait(
 						until.elementLocated(
@@ -91,7 +90,7 @@ async function openCrawlerWeb() {
 								'//\*[@id="yDmH0d"]/c-wiz/div/div/div[10]/div[3]/div/div[1]/div[4]/div/div/div[1]/div[1]/div/div[4]/div[1]/div/div/div[1]'
 							)
 						),
-						10000
+						5000
 					)
 					.click();
 				await driver
@@ -101,7 +100,7 @@ async function openCrawlerWeb() {
 								'//\*[@id="yDmH0d"]/c-wiz/div/div/div[10]/div[3]/div/div[1]/div[4]/div/div/div[1]/div[1]/div/div[4]/div[2]/div/div[1]'
 							)
 						),
-						10000
+						5000
 					)
 					.click();
 
@@ -114,11 +113,11 @@ async function openCrawlerWeb() {
 								'//\*[@id="yDmH0d"]/c-wiz/div/div/div[10]/div[3]/div/div[1]/div[4]/div/div/div[2]/div/div[2]/div/div[1]/div[1]/button'
 							)
 						),
-						10000
+						5000
 					)
 					.click();
 			} catch (err) {
-				return log(err);
+				return driver.get(url);
 			}
 		}
 
@@ -149,6 +148,7 @@ async function openCrawlerWeb() {
 			jobs.push(job);
 		}
 	} catch (err) {
+		driver.quit();
 		return log(err);
 	}
 }
@@ -164,4 +164,5 @@ function log(str) {
 	const time = `${Y}-${M}-${D}T${h}:${m}:${s}`;
 	console.log(`%c${time} | ` + `${str}`, "color:#91ddff");
 }
+
 openCrawlerWeb(); //打開爬蟲網頁
