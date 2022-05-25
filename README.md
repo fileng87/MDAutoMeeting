@@ -16,6 +16,7 @@
 `MORNING`: 早修會議連結
 
 #### .env 範例
+
 ```
 ACCOUNT=學校google帳號
 PASSWD=google帳號密碼
@@ -23,3 +24,8 @@ STDID=學生帳號密碼
 STDPWD=學生帳號密碼
 MORNING=早修會議連結
 ```
+## 備註
+
+請確定chromedriver.exe的版本與電腦chrome保持相同
+
+[chrome driver download](https://chromedriver.chromium.org/)
