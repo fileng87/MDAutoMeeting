@@ -1,8 +1,8 @@
 require("dotenv").config(); //載入.env環境檔
-const { Capabilities, Builder, By, Key, until } = require("selenium-webdriver"); // 加入虛擬網頁套件
+const { Capabilities, Builder, By, Key, until } = require("selenium-webdriver");
 const chrome = require("selenium-webdriver/chrome");
-const path = require("path"); //用於處理文件路徑的小工具
-const fs = require("fs"); //讀取檔案用
+const path = require("path"); 
+const fs = require("fs");
 const { CronJob } = require("cron");
 const { Table } = require("./table");
 const {delay, log} = require("./function")
@@ -11,18 +11,14 @@ const table = new Table(process.env.STDID, process.env.STDPWD)
 
 function checkDriver() {
 	try {
-		chrome.getDefaultService(); //確認是否有預設
+		chrome.getDefaultService();
 	} catch {
 		console.warn("找不到預設driver!");
 
-		//'./chromedriver.exe'記得調整成自己的路徑
 		const file_path = "./chromedriver.exe";
-		//請確認印出來日誌中的位置是否與你路徑相同
 		console.log(path.join(__dirname, file_path));
 
-		//確認路徑下chromedriver.exe是否存在
 		if (fs.existsSync(path.join(__dirname, file_path))) {
-			//設定driver路徑
 			const service = new chrome.ServiceBuilder(path.join(__dirname, file_path)).build();
 			chrome.setDefaultService(service);
 			console.log("設定driver路徑");
@@ -36,7 +32,6 @@ function checkDriver() {
 
 async function openCrawlerWeb() {
 		if (!checkDriver()) {
-			// 檢查Driver是否是設定，如果無法設定就結束程式
 			return;
 		}
 
@@ -59,6 +54,7 @@ async function openCrawlerWeb() {
 			"https://accounts.google.com/signin/v2/identifier?ltmpl=meet&continue=https%3A%2F%2Fmeet.google.com%3Fhs%3D193&&o_ref=https%3A%2F%2Fwww.google.com%2F&_ga=2.155881595.1533375318.1653442791-696588692.1653442791&flowName=GlifWebSignIn&flowEntry=ServiceLogin"
 		);
 
+		log("開始登入Google帳號...")
 		await driver
 			.wait(until.elementLocated(By.id("identifierId"), 5000))
 			.sendKeys(process.env.ACCOUNT);
@@ -74,11 +70,13 @@ async function openCrawlerWeb() {
 		await driver
 			.wait(until.elementLocated(By.xpath('//\*[@id="passwordNext"]/div/button')))
 			.click();
+		log("Google帳號登入完成!")
 
 		await delay(5000);
 
 		async function joinMeet(url) {
 			try {
+				log("開始加入線上會議...")
 				await driver.get(url);
 				await delay(7000);
 				await driver
@@ -114,19 +112,11 @@ async function openCrawlerWeb() {
 						5000
 					)
 					.click();
+				log("線上會議加入完成...")
 			} catch (err) {
 				return driver.get(url);
 			}
 		}
-
-		async function test() {
-			const class_ = await table.getClass(2,3);
-			await log(`加入課程: ${class_.name}`);
-			await joinMeet(class_.online.url);
-			await log("加入完成");
-		}
-
-		test();
 
 		const morning = new CronJob("0 10 8 * * 1-5", async () => {
 			await log("加入課程: 早修");
@@ -158,6 +148,15 @@ async function openCrawlerWeb() {
 			job.start();
 			jobs.push(job);
 		}
+
+		//dev
+		//async function test() {
+		//	const class_ = await table.getClass(2,3);
+		//	await log(`加入課程: ${class_.name}`);
+		//	await joinMeet(class_.online.url);
+		//	await log("加入完成");
+		//}
+		//test();
 	} catch (err) {
 		driver.quit();
 		return log(err);

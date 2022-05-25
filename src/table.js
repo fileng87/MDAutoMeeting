@@ -14,7 +14,7 @@ class Table {
 
     async getCookie(){
         try {
-            log("Getting cookie...");
+            log("開始抓取cookie...");
             const res = await axios({
                 responseType: "arraybuffer",
                 method: "get",
@@ -31,7 +31,7 @@ class Table {
             });
             const returnCookie = await res.headers["set-cookie"][0];
             this.cookie = returnCookie.slice(0, 36);
-            log("Getting cookie finish!");
+            log("cookie抓取完成!");
             return this.cookie;
         } catch (err) {
             log(err);
@@ -42,7 +42,7 @@ class Table {
     async getHtml() {
         try {
             await this.getCookie();
-            log("Getting html...");
+            log("開始抓取課表資訊...");
             const res = await axios({
                 responseType: "arraybuffer",
                 method: "post",
@@ -62,7 +62,7 @@ class Table {
                 ],
             });
             this.html = res.data;
-            log("Getting html finish!");
+            log("課表資訊抓取完畢!");
             return this.html;
         } catch (err) {
             log(err);
@@ -93,7 +93,7 @@ class Table {
     async getOnline(day, period, f_sPeriodsem) {
         try {
             const $ = cheerio.load(`${this.html}`)
-            log(`Getting online info... (day: ${day}), period: ${period})`);
+            log(`開始抓取線上會議連結... (星期: ${day}), 節數: ${period})`);
             const id = $(`#F_${day}_${period}_P div img`).attr("id").slice(6);
             const res = await axios({
                 method: "get",
@@ -114,7 +114,7 @@ class Table {
             const online = form(`#main div.vtC`).text().trim().split(/ +/);
             const url = online[0];
             const code = online[1];
-            log(`Getting online info finish`);
+            log(`取線上會議連結抓取完畢!`);
             return { url: url, code: code };
         } catch (err) {
             log(err);
