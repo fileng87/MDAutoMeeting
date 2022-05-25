@@ -53,7 +53,8 @@ async function openCrawlerWeb() {
 		driver.get(
 			"https://accounts.google.com/signin/v2/identifier?ltmpl=meet&continue=https%3A%2F%2Fmeet.google.com%3Fhs%3D193&&o_ref=https%3A%2F%2Fwww.google.com%2F&_ga=2.155881595.1533375318.1653442791-696588692.1653442791&flowName=GlifWebSignIn&flowEntry=ServiceLogin"
 		);
-
+		
+		log("開始後會根據時間自動加入會議")
 		log("開始登入Google帳號...")
 		await driver
 			.wait(until.elementLocated(By.id("identifierId"), 5000))
@@ -71,6 +72,7 @@ async function openCrawlerWeb() {
 			.wait(until.elementLocated(By.xpath('//\*[@id="passwordNext"]/div/button')))
 			.click();
 		log("Google帳號登入完成!")
+		log("會議開始前請勿關閉視窗...")
 
 		await delay(5000);
 
