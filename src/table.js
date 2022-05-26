@@ -114,7 +114,7 @@ class Table {
             const online = form(`#main div.vtC`).text().trim().split(/ +/);
             const url = online[0];
             const code = online[1];
-            log(`取線上會議連結抓取完畢!`);
+            log(`線上會議連結抓取完畢!`);
             return { url: url, code: code };
         } catch (err) {
             log(err);
