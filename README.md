@@ -1,7 +1,7 @@
 # 自動提前加入google meet(限明道中學)
 做完以下配置之後點開start.bat
 
-## Environment
+## 🛠️ Environment
 
 在專案資料夾內創建一個名為.env的檔案然後在裡面配置下以下資訊
 
@@ -24,8 +24,12 @@ STDID=學生帳號密碼
 STDPWD=學生帳號密碼
 MORNING=早修會議連結
 ```
-## 備註
+## 📜備註
 
 請確定chromedriver.exe的版本與電腦chrome保持相同
 
 [chrome driver download](https://chromedriver.chromium.org/)
+
+## ⚡狀態
+
+![Alt](https://repobeats.axiom.co/api/embed/95061a4041e5f3108f72145d1a3a6a098ee4f33e.svg "Repobeats analytics image")
