@@ -26,7 +26,8 @@ MORNING=早修會議連結
 ```
 ## 📜備註
 
-請確定chromedriver.exe的版本與電腦chrome保持相同
+1. 電腦需安裝Nodejs
+2. 請確定chromedriver.exe的版本與電腦chrome保持相同
 
 [chrome driver download](https://chromedriver.chromium.org/)
 
