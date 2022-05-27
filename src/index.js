@@ -5,7 +5,7 @@ const path = require("path");
 const fs = require("fs");
 const { CronJob } = require("cron");
 const { Table } = require("./table");
-const {delay, log} = require("./function")
+const { delay, log } = require("./function")
 
 const table = new Table(process.env.STDID, process.env.STDPWD)
 
@@ -117,6 +117,7 @@ async function openCrawlerWeb() {
 					.click();
 				log("線上會議加入完成...")
 			} catch (err) {
+				log(err)
 				return driver.get(url);
 			}
 		}
@@ -153,13 +154,13 @@ async function openCrawlerWeb() {
 		}
 
 		//dev
-		//async function test() {
-		//	const class_ = await table.getClass(2,3);
-		//	await log(`加入課程: ${class_.name}`);
-		//	await joinMeet(class_.online.url);
-		//	await log("加入完成");
-		//}
-		//test();
+		async function test() {
+			const class_ = await table.getClass(5,3);
+			await log(`加入課程: ${class_.name}`);
+			await joinMeet(class_.online.url);
+			await log("加入完成");
+		}
+		test();
 	} catch (err) {
 		driver.quit();
 		return log(err);
