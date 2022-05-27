@@ -169,10 +169,10 @@ function getClass(){
 
 		nowClass++;
 		if(i==11||i==16){
-			if(getMinute(i, 25)<nowTime&&nowTime<getMinute(i+1, 10)){
+			if(getMinute(i, 20)<nowTime&&nowTime<getMinute(i+1, 10)){
 				return nowClass;
 			}
-		} else if(getMinute(i, 25)<nowTime&&nowTime<getMinute(i+1, 15)){
+		} else if(getMinute(i, 20)<nowTime&&nowTime<getMinute(i+1, 15)){
 			return nowClass;
 		}
 	}
