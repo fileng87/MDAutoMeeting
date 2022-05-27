@@ -176,7 +176,6 @@ function getClass(){
 			return nowClass;
 		}
 	}
-
 	return 0;
 }
 

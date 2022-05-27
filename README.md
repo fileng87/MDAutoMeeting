@@ -26,10 +26,12 @@ MORNING=早修會議連結
 ```
 ## 📜備註
 
-1. 電腦需安裝NodeJS
-2. 請確定chromedriver.exe的版本與電腦chrome保持相同
+1. 電腦需安裝NodeJS、FireFox
+2. 請確定geckodriver.exe的版本與電腦firefox保持相同
 
-[Chrome driver download](https://chromedriver.chromium.org/)
+[Firefox driver download](https://github.com/mozilla/geckodriver/releases)
+
+[FireFox download](https://www.mozilla.org/zh-TW/firefox/new/)
 
 [NodeJS download](https://nodejs.org/en/)
 
