@@ -77,13 +77,13 @@ async function openCrawlerWeb() {
 
 		await delay(5000);
 
-		const nowClass = getClass();
+		/*const nowClass = getClass();
 		if(nowClass != 0){
 			const class_ = await table.getClass(new Date().getDay(),nowClass);
 			await log(`加入課程: ${class_.name}`);
 			await joinMeet(class_.online.url);
 			await log("加入完成");
-		}
+		}*/
 
 		async function joinMeet(url) {
 			try {
@@ -94,7 +94,7 @@ async function openCrawlerWeb() {
 					.wait(
 						until.elementLocated(
 							By.xpath(
-								'//\*[@id="yDmH0d"]/c-wiz/div/div/div[10]/div[3]/div/div[1]/div[4]/div/div/div[1]/div[1]/div/div[4]/div[1]/div/div[1]'
+								'//\*[@id="yDmH0d"]/c-wiz/div/div/div[10]/div[3]/div/div[1]/div[4]/div/div/div[1]/div[1]/div/div[4]/div[1]'
 							)
 						),
 						5000
@@ -104,7 +104,7 @@ async function openCrawlerWeb() {
 					.wait(
 						until.elementLocated(
 							By.xpath(
-								'//\*[@id="yDmH0d"]/c-wiz/div/div/div[10]/div[3]/div/div[1]/div[4]/div/div/div[1]/div[1]/div/div[4]/div[2]/div/div[1]'
+								'//\*[@id="yDmH0d"]/c-wiz/div/div/div[10]/div[3]/div/div[1]/div[4]/div/div/div[1]/div[1]/div/div[4]/div[2]'
 							)
 						),
 						5000
@@ -162,13 +162,13 @@ async function openCrawlerWeb() {
 		}
 
 		//dev
-		//async function test() {
-		//	const class_ = await table.getClass(5,3);
-		//	await log(`加入課程: ${class_.name}`);
-		//	await joinMeet(class_.online.url);
-		//	await log("加入完成");
-		//}
-		//test();
+		async function test() {
+			const class_ = await table.getClass(5,1);
+			await log(`加入課程: ${class_.name}`);
+			await joinMeet(class_.online.url);
+			await log("加入完成");
+		}
+		test();
 	} catch (err) {
 		driver.quit();
 		return log(err);
