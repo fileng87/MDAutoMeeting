@@ -69,14 +69,6 @@ async function openCrawlerWeb() {
 
 		await delay(5000);
 
-		const nowClass = getClass();
-		if(nowClass != 0){
-			const class_ = await table.getClass(new Date().getDay(),nowClass);
-			await log(`加入課程: ${class_.name}`);
-			await joinMeet(class_.online.url);
-			await log("加入完成");
-		}
-
 		async function joinMeet(url) {
 			try {
 				log("開始加入線上會議...")
@@ -151,6 +143,14 @@ async function openCrawlerWeb() {
 			});
 			job.start();
 			jobs.push(job);
+		}
+
+		const nowClass = getClass();
+		if(nowClass != 0){
+			const class_ = await table.getClass(new Date().getDay(),nowClass);
+			await log(`加入課程: ${class_.name}`);
+			await joinMeet(class_.online.url);
+			await log("加入完成");
 		}
 	} catch (err) {
 		driver.quit();
