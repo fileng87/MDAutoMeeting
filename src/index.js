@@ -160,15 +160,6 @@ async function openCrawlerWeb() {
 			job.start();
 			jobs.push(job);
 		}
-
-		//dev
-		//async function test() {
-		//	const class_ = await table.getClass(5,3);
-		//	await log(`加入課程: ${class_.name}`);
-		//	await joinMeet(class_.online.url);
-		//	await log("加入完成");
-		//}
-		//test();
 	} catch (err) {
 		driver.quit();
 		return log(err);
