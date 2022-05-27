@@ -77,6 +77,14 @@ async function openCrawlerWeb() {
 
 		await delay(5000);
 
+		const nowClass = getClass();
+		if(nowClass != 0){
+			const class_ = await table.getClass(new Date().getDay(),nowClass);
+			await log(`加入課程: ${class_.name}`);
+			await joinMeet(class_.online.url);
+			await log("加入完成");
+		}
+
 		async function joinMeet(url) {
 			try {
 				log("開始加入線上會議...")
@@ -167,4 +175,30 @@ async function openCrawlerWeb() {
 	}
 }
 
-openCrawlerWeb(); //打開爬蟲網頁
+function getClass(){
+	const date = new Date();
+	const h = date.getHours();
+	const m = date.getMinutes();
+	const nowTime = getMinute(h, m);
+	let nowClass = 0;
+	for(let i=8;i<16;i++){
+		if(i==12) continue;
+
+		nowClass++;
+		if(i==11||i==16){
+			if(getMinute(i, 25)<nowTime&&nowTime<getMinute(i+1, 10)){
+				return nowClass;
+			}
+		} else if(getMinute(i, 25)<nowTime&&nowTime<getMinute(i+1, 15)){
+			return nowClass;
+		}
+	}
+
+	return 0;
+}
+
+function getMinute(h, m){
+	return h*60+m;
+}
+
+openCrawlerWeb();
