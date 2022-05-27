@@ -86,7 +86,7 @@ async function openCrawlerWeb() {
 					.wait(
 						until.elementLocated(
 							By.xpath(
-								'//\*[@id="yDmH0d"]/c-wiz/div/div/div[10]/div[3]/div/div[1]/div[4]/div/div/div[1]/div[1]/div/div[4]/div[1]/div/div/div[1]'
+								'//\*[@id="yDmH0d"]/c-wiz/div/div/div[10]/div[3]/div/div[1]/div[4]/div/div/div[1]/div[1]/div/div[4]/div[1]/div/div[1]'
 							)
 						),
 						5000
