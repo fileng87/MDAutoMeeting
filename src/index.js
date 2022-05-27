@@ -118,7 +118,7 @@ async function openCrawlerWeb() {
 				log("線上會議加入完成...")
 			} catch (err) {
 				log(err)
-				return driver.get(url);
+				return joinMeet(url);
 			}
 		}
 
