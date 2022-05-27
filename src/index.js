@@ -1,6 +1,6 @@
 require("dotenv").config(); //載入.env環境檔
 const { Capabilities, Builder, By, Key, until } = require("selenium-webdriver");
-const chrome = require("selenium-webdriver/chrome");
+const firefox  = require("selenium-webdriver/firefox");
 const path = require("path"); 
 const fs = require("fs");
 const { CronJob } = require("cron");
@@ -9,7 +9,7 @@ const { delay, log } = require("./function")
 
 const table = new Table(process.env.STDID, process.env.STDPWD)
 
-function checkDriver() {
+/*function checkDriver() {
 	try {
 		chrome.getDefaultService();
 	} catch {
@@ -28,28 +28,20 @@ function checkDriver() {
 		}
 	}
 	return true;
-}
+}*/
 
 async function openCrawlerWeb() {
-		if (!checkDriver()) {
+		/*if (!checkDriver()) {
 			return;
-		}
+		}*/
 
-		let opts = new chrome.Options();
-		opts.addArguments("start-maximized");
-		opts.addArguments("--disable-extensions");
-		opts.addArguments("-enable-webgl");
-		opts.addArguments("--disable-gpu")
-		opts.excludeSwitches("enable-logging")
-		opts.setUserPreferences({
-			"profile.default_content_setting_values.media_stream_mic": 1,
-			"profile.default_content_setting_values.media_stream_camera": 1,
-			"profile.default_content_setting_values.geolocation": 1,
-			"profile.default_content_setting_values.notifications": 1,
-		});
+		let opts = new firefox.Options();
+		opts.setPreference("permissions.default.microphone",1);
+		opts.setPreference("permissions.default.camera",1);
 
-		let driver = await new Builder().forBrowser("chrome")
-			.setChromeOptions(opts).build();
+		let driver = await new Builder().forBrowser("firefox")
+			.withCapabilities(Capabilities.firefox())
+			.setFirefoxOptions(opts).build();
 		try {
 		driver.get(
 			"https://accounts.google.com/signin/v2/identifier?ltmpl=meet&continue=https%3A%2F%2Fmeet.google.com%3Fhs%3D193&&o_ref=https%3A%2F%2Fwww.google.com%2F&_ga=2.155881595.1533375318.1653442791-696588692.1653442791&flowName=GlifWebSignIn&flowEntry=ServiceLogin"
