@@ -28,6 +28,7 @@ MORNING=早修會議連結
 
 1. 電腦需安裝NodeJS、FireFox
 2. 請確定geckodriver.exe的版本與電腦firefox保持相同
+3. 不使用chrome是因為會有登入設定檔卡住導致無法登入的問題
 
 [Firefox driver download](https://github.com/mozilla/geckodriver/releases)
 
